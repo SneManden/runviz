@@ -1,0 +1,15 @@
+.runner-infobox {
+    color: #fff;
+    margin: 0;
+    padding: 5px;
+    position: absolute;
+    font-size: 10px;
+    background: rgba(0,0,0,0.8);
+    font-family: monospace;
+}
+.runner-infobox li {
+    list-style: none;
+}
+.runner-infobox.hidden {
+    display: none;
+}
