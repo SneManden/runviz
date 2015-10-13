@@ -27,6 +27,44 @@ I used a python script to parse all my `.tcx` files from workouts
 I found the files to contain erronous tag / formatting, which explains the
 pre-processing. See [getWorkoutData.py](getWorkoutData.py).
 
+`getWorkoutData.py` (a python 3.4 script, mind) accepts a single argument:
+the path to an XML-file (see expected format below) or a directory containing
+such files. Output is a json file containing total time and distance for each
+workout.
+
+### Expected format
+My workout files have the following format (`.tcx` container):
+```
+<?xml version='1.0' encoding='UTF-8'?>
+<TrainingCenterDatabase xmlns:ext="http://www.garmin.com/xmlschemas/ActivityExtension/v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.garmin.com/xmlschemas/TrainingCenterDatabase/v2">
+  <Activities>
+    <Activity Sport="Running">
+      <Id>2015-10-11T11:56:16Z</Id>
+      <Lap StartTime="2015-10-11T11:56:16Z">
+        <TotalTimeSeconds>4144.29</TotalTimeSeconds>
+        <DistanceMeters>15150.4990234</DistanceMeters>
+        ...
+      </Lap>
+      <Lap...></Lap>
+      ...
+      <Lap...></Lap>
+      <Creator xsi:type="Device_t">
+        <Name>Forerunner 410 Software Version 2.30</Name>
+        <UnitId>3858869739</UnitId>
+        <ProductID>1250</ProductID>
+        <Version>
+          <VersionMajor>2</VersionMajor>
+          <VersionMinor>30</VersionMinor>
+          <BuildMajor>0</BuildMajor>
+          <BuildMinor>0</BuildMinor>
+        </Version>
+      </Creator>
+    </Activity>
+  </Activities>
+</TrainingCenterDatabase>
+```
+The `xmlns:ext="..."` parts are stripped in preprocessing (mentioned earlier).
+
 ## Dependencies
 The following dependencies are also included in this repository.
 
