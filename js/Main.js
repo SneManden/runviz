@@ -5,13 +5,14 @@ var WIDTH  = 851, // 567, // 851,
     MAXRUNNERS = 150,
     OPTIONS = {backgroundColor : 0x1099bb};
 
-function Main(container) {
+function Main(container, debug) {
     this.container = document.querySelectorAll(container)[0];
     this.width = WIDTH;
     this.height = HEIGHT;
     this.ratio = RATIO;
     this.scale = SCALE;
     this.maxrunners = MAXRUNNERS;
+    this.debug = debug;
     this.name = "main";
     // Add renderer to container
     this.stage = new PIXI.Container();
@@ -20,10 +21,12 @@ function Main(container) {
     this.container.style.width = WIDTH+"px";
     this.loadAssets();
     // Add FPS stats
-    this.stats = new Stats();
-    this.container.appendChild(this.stats.domElement );
-    this.stats.domElement.style.position = "absolute";
-    this.stats.domElement.style.top = "0px";
+    if (this.debug) {
+        this.stats = new Stats();
+        this.container.appendChild(this.stats.domElement );
+        this.stats.domElement.style.position = "absolute";
+        this.stats.domElement.style.top = "0px";
+    }
 }
 
 Main.prototype.loadAssets = function() {
@@ -61,9 +64,13 @@ Main.prototype.update = function() {
 };
 
 Main.prototype.animate = function() {
-    this.stats.begin();
+    if (this.debug)
+        this.stats.begin();
+    
     this.update();
     this.renderer.render(this.stage);
     requestAnimationFrame(this.animate.bind(this));
-    this.stats.end();
+
+    if (this.debug)
+        this.stats.end();
 };

@@ -6,6 +6,8 @@ function Background(logic, width, height) {
     this.tilePosition.x = 0;
     this.tilePosition.y = 0;
     this.viewportX = 0;
+    this.sourceWidth = logic.resources.back_greenlands.texture.width; // 1000
+    this.sourceHeight = logic.resources.back_greenlands.texture.height; // 563
 
     this.logic = logic;
     this.width = width;
