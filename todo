@@ -5,8 +5,8 @@ TODO:
    ☐ Wider background
    ☐ Multiple backgrounds (varying distance)
    ☐ Multiple backgrounds (varying scenery)
- ☐ Resprite the sign?
- ☐ Should the runners jump when finished?
+ ✔ Resprite the sign? NO @done (15-10-13 15:25)
+ ✔ Should the runners jump when finished? @done (15-10-13 15:25)
    Or only the furthest? Or each of the best, e.g. fastest 10k, furthest, etc.?
  ☐ Settings / parameters in seperate file
  ✔ Test larger canvas @done (15-10-13 15:08)
