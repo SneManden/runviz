@@ -53,7 +53,7 @@ Runner.prototype.update = function(dt, scale) {
     this.runFrame += (0.08 + this.speed);
 
     // Stop when distances has been run
-    if (this.position.x >= this.dist/scale)
+    if (this.position.x-this.startPosX >= this.dist/scale)
         this.stopped = true;
 
     // Move if not stopped
@@ -104,6 +104,6 @@ Runner.prototype.createInfobox = function(workout, speed) {
                   + "<li class=\"dist\">dist: " + pDist(workout.dist) + "</li>"
                   + "<li class=\"time\">time: " + pTime(workout.time) + "</li>"
                   + "<li class=\"time\">speed: "+ pSpeed(speed)       + "</li>";
-    document.body.appendChild( box );
+    this.logic.main.container.appendChild( box );
     this.infobox = box;
 };

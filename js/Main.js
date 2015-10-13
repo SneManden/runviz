@@ -1,24 +1,27 @@
-var WIDTH  = 567, // 851,
-    HEIGHT = 284, // 210, // 315,
-    RATIO = (37/1.75), // = 21.14 (px/m)
+var WIDTH  = 851, // 567, // 851,
+    HEIGHT = 560, // 284, // 210, // 315,
+    RATIO = (48/1.75), // = 21.14 (px/m)
     SCALE = 500,
     MAXRUNNERS = 150,
     OPTIONS = {backgroundColor : 0x1099bb};
 
-function Main(width, height, ratio, scale, maxrunners, options) {
-    this.width = width;
-    this.height = height;
-    this.ratio = ratio;
-    this.scale = scale;
-    this.maxrunners = maxrunners;
+function Main(container) {
+    this.container = document.querySelectorAll(container)[0];
+    this.width = WIDTH;
+    this.height = HEIGHT;
+    this.ratio = RATIO;
+    this.scale = SCALE;
+    this.maxrunners = MAXRUNNERS;
     this.name = "main";
+    // Add renderer to container
     this.stage = new PIXI.Container();
-    this.renderer = new PIXI.autoDetectRenderer(width, height, options);
-    document.body.appendChild(this.renderer.view);
+    this.renderer = new PIXI.autoDetectRenderer(WIDTH, HEIGHT, OPTIONS);
+    this.container.appendChild(this.renderer.view);
+    this.container.style.width = WIDTH+"px";
     this.loadAssets();
     // Add FPS stats
     this.stats = new Stats();
-    document.body.appendChild( this.stats.domElement );
+    this.container.appendChild(this.stats.domElement );
     this.stats.domElement.style.position = "absolute";
     this.stats.domElement.style.top = "0px";
 }
@@ -27,11 +30,15 @@ Main.prototype.loadAssets = function() {
     var self = this;
     console.log("Loading assets");
     var assets = [
-        // http://mmantas.deviantart.com/art/Pixel-Forest-Background-530794166
-        {name:"trees", data:"assets/background-tree-scaled.png"},
+        // By Zeyu Ren 任泽宇
+        {name:"back_greenlands", data:"assets/back_greenlands-scaled.png"},
+        {name:"back_rocks", data:"assets/back_rocks.png"},
+        {name:"back_city", data:"assets/back_city.png"},
         // Own work
         {name:"sign", data:"assets/sign.png"},
         {name:"male", data:"assets/male_custom.png"},
+        {name:"ground", data:"assets/back_ground.png"},
+        // Workouts
         {name:"workouts", data:"js/workouts.json"}
     ];
     var loader = PIXI.loader;

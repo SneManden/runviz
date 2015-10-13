@@ -1,7 +1,7 @@
 TODO:
  ✔ Migrate runners to their own Sprite-derived class @done (15-10-13 10:58)
  ✔ Add real runner sprite sheets @done (15-10-13 13:43)
- ☐ Create background (or make sure we can use the current one)
+ ✔ Create background (or make sure we can use the current one) @done (15-10-13 15:08)
    ☐ Wider background
    ☐ Multiple backgrounds (varying distance)
    ☐ Multiple backgrounds (varying scenery)
@@ -9,5 +9,5 @@ TODO:
  ☐ Should the runners jump when finished?
    Or only the furthest? Or each of the best, e.g. fastest 10k, furthest, etc.?
  ☐ Settings / parameters in seperate file
- ☐ Test larger canvas
+ ✔ Test larger canvas @done (15-10-13 15:08)
  ☐ 

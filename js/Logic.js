@@ -15,6 +15,11 @@ function Logic(main, stage, resources) {
     // Background
     this.background = new Background(this, this.width, this.height);
     this.stage.addChild(this.background);
+    // Ground
+    this.ground = new PIXI.extras.TilingSprite(this.resources.ground.texture, main.width, 68);
+    this.ground.position.y = main.height-68;
+    this.ground.DELTA_X = 1.0;
+    this.stage.addChild(this.ground);
     
     // World
     this.world = new PIXI.Container();
@@ -23,7 +28,11 @@ function Logic(main, stage, resources) {
     // Camera
     this.camera = new Camera(this, this.width, this.height, this.world, this.background);
     this.stage.addChild(this.camera);
+    // Add other entities to background
     this.background.setCamera(this.camera);
+    this.background.setGround(this.ground);
+
+    var startOffset = 50;
 
     // Add runners
     console.log("Number of workouts:", this.resources.workouts.data.length);
@@ -36,7 +45,8 @@ function Logic(main, stage, resources) {
     this.workouts.forEach(function(workout, index) {
         workout.date = new Date(workout.date);
         var runner = new Runner(self.resources.male.texture, self);
-        runner.position.x = 10;
+        runner.startPosX = startOffset;
+        runner.position.x = runner.startPosX;
         runner.groundPos = self.height -74 + (index/self.workouts.length)*37;
         runner.position.y = runner.groundPos;
         runner.dist = workout.dist * self.ratio; // m => px
@@ -54,7 +64,7 @@ function Logic(main, stage, resources) {
     this.selected = null;
     this.world.addChild(this.runners);
 
-    this.createDistSigns();
+    this.createDistSigns(startOffset);
 
     // Timing
     this.events = [];
@@ -66,7 +76,7 @@ function Logic(main, stage, resources) {
 
 Logic.prototype.start = function() {
     for (runner of this.runners.children) {
-        runner.position.x = 0;
+        runner.position.x = runner.startPosX;
         runner.stopped = true;
         runner.celebrating = false;
     }
@@ -116,11 +126,11 @@ Logic.prototype.selectRunner = function(runner) {
 
     this.hideRunners();
     removeClass(runner.infobox, "hidden");
-    runner.tint = 0xffaaaa;
+    runner.tint = 0xaaaaaa;
     this.selected = runner;
 };
 
-Logic.prototype.createDistSigns = function() {
+Logic.prototype.createDistSigns = function(offsetX) {
     var numSigns = Math.ceil(this.maxDist/this.ratio/1000) + 1;
 
     this.signs = new PIXI.Container();
@@ -130,7 +140,7 @@ Logic.prototype.createDistSigns = function() {
         var sign = new PIXI.Sprite(texture);
         sign.anchor.x = 0.5;
         sign.anchor.y = 0.5;
-        sign.position.x = 1000*i * this.ratio / this.scale;
+        sign.position.x = offsetX + 1000*i * this.ratio / this.scale;
         sign.position.y = this.height - 16;
         this.signs.addChild(sign);
         // Add text

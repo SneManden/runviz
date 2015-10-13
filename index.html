@@ -8,6 +8,19 @@
         <link rel="stylesheet" href="css/style.css">
     </head>
     <body>
+        <div class="container"></div>
+
+        <div class="credits">
+            <ul>
+                <li>
+                    Created by Casper Kehlet Jensen on 13th of October, 2015.
+                    Source code at <a href="#">github</a>.
+                </li>
+                <li>
+                    Background art based on work by <a href="http://opengameart.org/content/backgrounds-for-2d-platformers">Zeyu Ren 任泽宇</a>.
+                </li>
+            </ul>
+        </div>
         <script src="js/pixi.js"></script>
         <script src="js/stats.min.js"></script>
         <script src="js/Background.js"></script>
@@ -18,7 +31,7 @@
         <script src="js/Main.js"></script>
         <script>
         (function() {
-            main = new Main(WIDTH, HEIGHT, RATIO, SCALE, MAXRUNNERS, OPTIONS);
+            main = new Main(".container");
         })();
         </script>
     </body>

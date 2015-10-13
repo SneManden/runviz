@@ -17,6 +17,11 @@ Camera.prototype.follow = function(object) {
     this.background.setViewportX(-this.world.position.x);
 };
 Camera.prototype.followX = function(x) {
+    if (x < this.viewWidth/2)
+        x = this.viewWidth/2;
+    if (x > 1000-0.32*this.viewWidth/2) // ugly :/
+        x = 1000-0.32*this.viewWidth/2;
+
     this.world.position.x = this.viewWidth/2 - x;
     this.background.setViewportX(-this.world.position.x);
 };
