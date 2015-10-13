@@ -49,6 +49,7 @@ if __name__ == "__main__":
                 workout = parseXML(argument + f)
                 if workout:
                     data.append(workout)
+            data = sorted(data, key=lambda k: k["date"])
         else:
             print("ERROR: Ehh, I'm not sure what that (", argument, ") is")
             exit(1)
