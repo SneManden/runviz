@@ -31,12 +31,16 @@ function pDate(date) {
 }
 
 function pDist(dist) {
-    return dist.toFixed(2) + " km";
+    return (dist/1000).toFixed(2) + " km";
+}
+
+function pSpeed(speed) {
+    return (speed*1000*3.6).toFixed(2) + " km/h";
 }
 
 function pTime(time) {
     hour = Math.floor(time / 3600);
     min = Math.floor((time - hour*3600) / 60);
-    sec = time - hour*3600 - min*60;
+    sec = (time - hour*3600 - min*60).toFixed(2);
     return hour + "h " + min + "m " + sec + "s";
 }

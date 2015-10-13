@@ -1,5 +1,5 @@
 function Background(logic, width, height) {
-    var texture = PIXI.Texture.fromImage("assets/background-tree-scaled.png");
+    var texture = logic.resources.trees.texture;//PIXI.Texture.fromImage("assets/background-tree-scaled.png");
     PIXI.extras.TilingSprite.call(this, texture, width, height);
     this.position.x = 0;
     this.position.y = 0;

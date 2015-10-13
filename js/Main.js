@@ -1,14 +1,16 @@
 var WIDTH  = 567, // 851,
     HEIGHT = 284, // 210, // 315,
     RATIO = (37/1.75), // = 21.14 (px/m)
-    SCALE = 100,
+    SCALE = 500,
+    MAXRUNNERS = 150,
     OPTIONS = {backgroundColor : 0x1099bb};
 
-function Main(width, height, ratio, scale, options) {
+function Main(width, height, ratio, scale, maxrunners, options) {
     this.width = width;
     this.height = height;
     this.ratio = ratio;
     this.scale = scale;
+    this.maxrunners = maxrunners;
     this.name = "main";
     this.stage = new PIXI.Container();
     this.renderer = new PIXI.autoDetectRenderer(width, height, options);
@@ -22,6 +24,7 @@ function Main(width, height, ratio, scale, options) {
 }
 
 Main.prototype.loadAssets = function() {
+    var self = this;
     console.log("Loading assets");
     var assets = [
         // https://github.com/pixijs/examples/blob/gh-pages/_assets/basics/bunny.png
@@ -29,18 +32,21 @@ Main.prototype.loadAssets = function() {
         // http://mmantas.deviantart.com/art/Pixel-Forest-Background-530794166
         {name:"trees", data:"assets/background-tree-scaled.png"},
         // Own work
-        {name:"sign", data:"assets/sign.png"}
+        {name:"sign", data:"assets/sign.png"},
+        {name:"workouts", data:"js/workouts.json"}
     ];
     var loader = PIXI.loader;
     for (asset of assets)
         loader.add(asset.name, asset.data);
-    loader.once("complete", this.assetsLoaded.bind(this));
-    loader.load();
+    loader.load(function(loader, resources) {
+        self.resources = resources;
+        self.assetsLoaded.call(self);
+    });
 };
 
 Main.prototype.assetsLoaded = function() {
     console.log("Assets loaded");
-    this.logic = new Logic(this, this.stage);
+    this.logic = new Logic(this, this.stage, this.resources);
     this.animate();
 };
 
