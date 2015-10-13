@@ -5,6 +5,7 @@ function Logic(main, stage, resources) {
     this.ratio = main.ratio;
     this.scale = main.scale;
     this.maxrunners = main.maxrunners;
+    this.gravity = 0.5;
 
     this.stage = stage;
     this.resources = resources;
@@ -27,31 +28,22 @@ function Logic(main, stage, resources) {
     // Add runners
     console.log("Number of workouts:", this.resources.workouts.data.length);
     this.workouts = this.resources.workouts.data.filter(function(el, index){
-        return index < self.maxrunners; // add only #maxrunners
+        return index < self.maxrunners; // add up to #maxrunners
     });
     var n = 0;
     var maxDist = 0;
     this.runners = new PIXI.Container();
     this.workouts.forEach(function(workout, index) {
         workout.date = new Date(workout.date);
-        var runner = new PIXI.Sprite(self.resources.bunny.texture);
-        runner.anchor.x = 0.5;
-        runner.anchor.y = 0.5;
+        var runner = new Runner(self.resources.bunny.texture, self);
         runner.position.x = 10;
         runner.groundPos = self.height -74 + (index/self.workouts.length)*37;
         runner.position.y = runner.groundPos;
         runner.dist = workout.dist * self.ratio; // m => px
-        runner.maxDist = maxDist = maxDist < runner.dist ? runner.dist : maxDist;
-        runner.speed = self.setSpeed(workout);
+        runner.maxDist = maxDist = (maxDist<runner.dist) ? runner.dist : maxDist;
+        runner.speed = runner.setSpeed(workout, self.ratio);
         runner.name = "Runner #" + index + " (" + pDate(workout.date) + ")";
-        runner.stopped = true;
-        runner.celebrating = false;
-        runner.onGround = true;
-        runner.vely = 0.0;
-        runner.runnerUpdate = runnerUpdate.bind(runner);
-        runner.infobox = self.createInfobox(workout, runner.speed/self.ratio);
-        runner.interactive = true;
-        runner.logic = self;
+        runner.createInfobox(workout, runner.speed/self.ratio);
         runner.on('mousedown',  self.selectRunner.bind(self, runner))
               .on('touchstart', self.selectRunner.bind(self, runner))
         self.runners.addChild(runner);
@@ -59,45 +51,17 @@ function Logic(main, stage, resources) {
     });
     console.log("Created", n, "runners");
     this.maxDist = maxDist;
-    console.log("Maximum distance", this.maxDist);
     this.selected = null;
     this.world.addChild(this.runners);
 
     this.createDistSigns();
 
-    this.events = [];
-
     // Timing
+    this.events = [];
     this.started = false;
-    this.last = (new Date).getTime();
     this.gameOver = false;
+    this.last = (new Date).getTime();
     this.start();
-}
-
-function runnerUpdate(dt, scale) {
-    if (this.position.x >= this.dist/scale)
-        this.stopped = true;
-    // Move non-stopped runners
-    if (!this.stopped)
-        this.position.x += this.speed * dt;
-
-    if (!this.celebrating)
-        return;
-    this.vely += 0.5; // gravity = 0.5
-    this.position.y += this.vely;
-    if (this.position.y >= this.groundPos) {
-        this.position.y = this.groundPos;
-        this.vely = 0.0;
-        this.onGround = true;
-    }
-    jumpStart.call(this);
-}
-
-function jumpStart() {
-    if (this.onGround) { // grounded
-        this.vely = -((6.0*Math.random())+6.0);
-        this.onGround = false;
-    }
 }
 
 Logic.prototype.start = function() {
@@ -132,20 +96,8 @@ Logic.prototype.endGame = function() {
         runner.celebrating = true;
         bestrunner = (runner.position.x>bestrunner.position.x) ? runner : bestrunner;
     }
-    bestrunner.celebrating = true;
     bestrunner.selected = true;
     console.log("WE HAVE A WINNER:", bestrunner.name);
-}
-
-Logic.prototype.createInfobox = function(workout, speed) {
-    var div = document.createElement("ul");
-    div.className = "runner-infobox hidden";
-    div.innerHTML = "<li class=\"date\">date: " + pDate(workout.date) + "</li>"
-                  + "<li class=\"dist\">dist: " + pDist(workout.dist) + "</li>"
-                  + "<li class=\"time\">time: " + pTime(workout.time) + "</li>"
-                  + "<li class=\"time\">speed: "+ pSpeed(speed)       + "</li>";
-    document.body.appendChild( div );
-    return div;
 };
 
 Logic.prototype.hideRunners = function() {
@@ -193,11 +145,6 @@ Logic.prototype.createDistSigns = function() {
     console.log("Created", numSigns, "signs");
 };
 
-// speed: m/s => px/ms
-Logic.prototype.setSpeed = function(workout) {
-    return ((workout.dist)/(workout.time)) * this.ratio / 1000;
-};
-
 Logic.prototype.update = function() {
     var now = (new Date).getTime();
     var dt = now-this.last; // in case dt is 0
@@ -205,7 +152,7 @@ Logic.prototype.update = function() {
     var self = this;
     var allStopped = true;
     this.runners.children.forEach(function(runner, index) {
-        runner.runnerUpdate.call(runner, dt, self.scale);
+        runner.update.call(runner, dt, self.scale);
 
         allStopped &= runner.stopped;
     });
