@@ -17,7 +17,7 @@ def stripNonsense(corruptxmltree): # .tcx files contain erroneous content
     regex = re.compile(r"(<[a-zA-Z]+)[\s][a-zA-Z]+:.*(>)")
     return regex.sub(r"\1\2", corruptxmltree)
 
-def getData(xmltree, debug=False):
+def getData(xmltree, debug=False, filter=(lambda data: data["dist"]>0)):
     root = ET.fromstring(xmltree)
     activity = root[0][0]
     date = activity.find("Id").text
@@ -29,7 +29,8 @@ def getData(xmltree, debug=False):
         lapdist = float(lap.find("DistanceMeters").text)
         meters.append(lapdist)
         if debug: print("  Lap: {time:", laptime, ", dist:", lapdist, "}")
-    return {"date":date, "time":sum(seconds), "dist":sum(meters)}
+    data = {"date":date, "time":sum(seconds), "dist":sum(meters)}
+    return data if filter(data) else None
 
 def parseXML(filename):
     f = open(filename, "r")
@@ -45,7 +46,9 @@ if __name__ == "__main__":
             data = parseXML(argument)
         elif os.path.isdir(argument):
             for f in os.listdir(argument):
-                data.append(parseXML(argument + f))
+                workout = parseXML(argument + f)
+                if workout:
+                    data.append(workout)
         else:
             print("ERROR: Ehh, I'm not sure what that (", argument, ") is")
             exit(1)
