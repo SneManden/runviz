@@ -1,0 +1,7 @@
+TODO:
+ ☐ Migrate runners to their own Sprite-derived class
+ ☐ Add real runner sprite sheets
+ ☐ Create background (or make sure we can use the current one)
+ ☐ Resprite the sign?
+ ☐ Should the runners jump when finished?
+   Or only the furthest? Or each of the best, e.g. fastest 10k, furthest, etc.?
