@@ -1,6 +1,6 @@
 TODO:
  ✔ Migrate runners to their own Sprite-derived class @done (15-10-13 10:58)
- ☐ Add real runner sprite sheets
+ ✔ Add real runner sprite sheets @done (15-10-13 13:43)
  ☐ Create background (or make sure we can use the current one)
    ☐ Wider background
    ☐ Multiple backgrounds (varying distance)
