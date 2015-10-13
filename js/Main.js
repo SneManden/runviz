@@ -33,6 +33,7 @@ Main.prototype.loadAssets = function() {
         {name:"trees", data:"assets/background-tree-scaled.png"},
         // Own work
         {name:"sign", data:"assets/sign.png"},
+        {name:"male", data:"assets/male_custom.png"},
         {name:"workouts", data:"js/workouts.json"}
     ];
     var loader = PIXI.loader;

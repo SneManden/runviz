@@ -35,7 +35,7 @@ function Logic(main, stage, resources) {
     this.runners = new PIXI.Container();
     this.workouts.forEach(function(workout, index) {
         workout.date = new Date(workout.date);
-        var runner = new Runner(self.resources.bunny.texture, self);
+        var runner = new Runner(self.resources.male.texture, self);
         runner.position.x = 10;
         runner.groundPos = self.height -74 + (index/self.workouts.length)*37;
         runner.position.y = runner.groundPos;
