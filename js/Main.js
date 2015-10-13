@@ -27,8 +27,6 @@ Main.prototype.loadAssets = function() {
     var self = this;
     console.log("Loading assets");
     var assets = [
-        // https://github.com/pixijs/examples/blob/gh-pages/_assets/basics/bunny.png
-        {name:"bunny", data:"assets/bunny.png"},
         // http://mmantas.deviantart.com/art/Pixel-Forest-Background-530794166
         {name:"trees", data:"assets/background-tree-scaled.png"},
         // Own work

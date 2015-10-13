@@ -131,7 +131,7 @@ Logic.prototype.createDistSigns = function() {
         sign.anchor.x = 0.5;
         sign.anchor.y = 0.5;
         sign.position.x = 1000*i * this.ratio / this.scale;
-        sign.position.y = this.height - 32;
+        sign.position.y = this.height - 16;
         this.signs.addChild(sign);
         // Add text
         var signText = new PIXI.Text(i, textStyle);
